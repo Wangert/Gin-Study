@@ -8,11 +8,25 @@ import (
 
 //配置结构体
 type Config struct {
-	AppName string `json:"app_name"`
-	AppMode string `json:"app_mode"`
-	AppHost string `json:"app_host"`
-	AppPort string `json:"app_port"`
+	AppName  string `json:"app_name"`
+	AppMode  string `json:"app_mode"`
+	AppHost  string `json:"app_host"`
+	AppPort  string `json:"app_port"`
+	Database DatabaseConfig `json:"database"`
 }
+
+//数据库配置结构体
+type DatabaseConfig struct {
+	Driver	 string	`json:"driver"`
+	User	 string	`json:"user"`
+	Password string `json:"password"`
+	Host 	 string	`json:"host"`
+	Port 	 string	`json:"port"`
+	DBName 	 string `json:"db_name"`
+	Charset  string `json:"charset"`
+	ShowSql  bool	`json:"show_sql"`
+}
+
 //配置对象
 var cfg Config
 

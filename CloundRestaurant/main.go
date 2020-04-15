@@ -12,6 +12,11 @@ func main()  {
 	if err != nil {
 		panic(err)
 	}
+	//配置xorm操作引擎
+	_, err = tool.OrmEngine(cfg)
+	if err != nil {
+		panic(err)
+	}
 
 	app := gin.Default()
 	//设置路由
@@ -23,4 +28,5 @@ func main()  {
 //路由设置
 func registerRouter(router *gin.Engine)  {
 	new(controller.HelloController).Router(router)
+	new(controller.MemberController).Router(router)
 }
