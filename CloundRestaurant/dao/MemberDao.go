@@ -5,10 +5,25 @@ import (
 	"CloundRestaurant/param"
 	"CloundRestaurant/model"
 	"log"
+	"fmt"
 )
 
 type MemberDao struct {
 	*tool.Orm
+}
+
+//上传用户头像
+func (memberDao *MemberDao) UploadMemberAvator(userId int64, fileName string) int64 {
+
+	member := model.Member{Avatar:fileName}
+
+	result, err := memberDao.Where("id = ?", userId).Update(&member)
+	if err != nil {
+		fmt.Println(err.Error())
+		return 0
+	}
+
+	return result
 }
 
 //验证用户是否存在
@@ -42,10 +57,10 @@ func (memberDao *MemberDao) Validate(loginParam param.LoginParam) *model.Member 
 
 	//获取用户名和密码
 	username := loginParam.Username
-	password := loginParam.Password
+	passwordHash := tool.Sha256(loginParam.Password)
 
 	//判断合法性
-	if _, err := memberDao.Where("username = ? and password = ?", username, password).Get(&member); err != nil {
+	if _, err := memberDao.Where("username = ? and password = ?", username, passwordHash).Get(&member); err != nil {
 		log.Fatal(err)
 	}
 

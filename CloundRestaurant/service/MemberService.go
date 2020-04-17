@@ -12,6 +12,14 @@ type MemberService struct {
 
 }
 
+//上传头像
+func (memberService *MemberService) UploadAvator(userId int64, fileNmae string) string {
+
+	memberDao := dao.MemberDao{tool.DBEngine}
+	result := memberDao.UploadMemberAvator(userId, fileNmae)
+
+}
+
 func (memberService *MemberService) SendSms(phone string) bool {
 	return true
 }
@@ -33,7 +41,7 @@ func (memberService *MemberService) Register(registerParam param.RegisterParam) 
 
 	member := model.Member{}
 	member.Username = registerParam.Username
-	member.Password = registerParam.Password
+	member.Password = tool.Sha256(registerParam.Password)
 	member.RegisterTime = time.Now().Unix()
 
 	if result := memberDao.AddMember(member); result == 0 {
